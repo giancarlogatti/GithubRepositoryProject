@@ -1,5 +1,6 @@
 package com.example.githubproject.data.remote
 
+import com.example.githubproject.data.local.FavoritedGithubRepo
 import com.squareup.moshi.Json
 
 data class GithubRepos (
@@ -13,8 +14,16 @@ data class GithubRepo (
     @Json(name = "language") val language: String,
     @Json(name = "owner") val owner: Owner,
     //fetch a list of the IDs of repositories favorited locally, and if IDs match, mark isFavorited as True
-    val isFavorited: Boolean? = null
-)
+    var isFavorited: Boolean? = null
+) {
+    fun toFavoritedGithubRepo() = FavoritedGithubRepo(
+        id,
+        name,
+        description,
+        language,
+        owner.avatarUrl
+    )
+}
 
 data class Owner(
     @Json(name = "avatar_url") val avatarUrl: String

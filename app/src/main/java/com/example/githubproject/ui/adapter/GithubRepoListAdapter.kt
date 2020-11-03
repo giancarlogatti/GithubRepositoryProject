@@ -6,15 +6,17 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.githubproject.R
 import com.example.githubproject.data.remote.GithubRepo
 import de.hdodenhof.circleimageview.CircleImageView
 
-class GithubRepoListAdapter(private val repos: List<GithubRepo>,
-                            private val githubRepoListener: GithubRepoListener? = null)
+class GithubRepoListAdapter(private val githubRepoListener: GithubRepoListener? = null)
                             : RecyclerView.Adapter<GithubRepoListAdapter.ViewHolder>() {
+
+    private var repos = listOf<GithubRepo>()
 
     interface GithubRepoListener {
         fun onGithubRepoFavorited(githubRepo: GithubRepo)
@@ -25,6 +27,17 @@ class GithubRepoListAdapter(private val repos: List<GithubRepo>,
         val tvRepoName = view.findViewById<TextView>(R.id.tv_repository_name)
         val tvRepoDescription = view.findViewById<TextView>(R.id.tv_repository_description)
         val imgFavorite = view.findViewById<ImageView>(R.id.img_favorite)
+    }
+
+    fun submitRepoData(newRepos: List<GithubRepo>){
+        val diffResult = DiffUtil.calculateDiff(
+            RepoDiffCallback(
+                repos,
+                newRepos
+            )
+        )
+        repos = newRepos
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
@@ -47,5 +60,17 @@ class GithubRepoListAdapter(private val repos: List<GithubRepo>,
                         R.drawable.ic_baseline_favorite_filled_24))
             }
         }
+    }
+
+    private class RepoDiffCallback(private val oldList: List<GithubRepo>, private val newList: List<GithubRepo>): DiffUtil.Callback() {
+        override fun getOldListSize() = oldList.size
+
+        override fun getNewListSize() = newList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
+            oldList[oldItemPosition].id == newList[newItemPosition].id
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) =
+            oldList[oldItemPosition] == newList[newItemPosition]
     }
 }

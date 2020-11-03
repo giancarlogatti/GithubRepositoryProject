@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "Repositories")
 data class FavoritedGithubRepo(
     @ColumnInfo(name = "id") @PrimaryKey val id: Long,
     @ColumnInfo(name = "name") val name: String,

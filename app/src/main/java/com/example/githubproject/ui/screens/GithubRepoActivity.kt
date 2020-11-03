@@ -10,7 +10,9 @@ import com.example.githubproject.data.remote.GithubRepo
 import com.example.githubproject.databinding.ActivityGithubRepoBinding
 import com.example.githubproject.ui.GithubRepoViewModel
 import com.example.githubproject.ui.adapter.GithubRepoListAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class GithubRepoActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener, GithubRepoListAdapter.GithubRepoListener {
 
     private lateinit var binding: ActivityGithubRepoBinding
@@ -22,11 +24,14 @@ class GithubRepoActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener
         binding = ActivityGithubRepoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        githubRepoViewModel.queriedReposLiveData.observe(this){
+            githubRepoListAdapter.submitRepoData(it)
+        }
     }
 
     //save this github repository as a favorited repo
     override fun onGithubRepoFavorited(githubRepo: GithubRepo) {
-        TODO("Not yet implemented")
+        githubRepoViewModel.saveGithubRepo(githubRepo.toFavoritedGithubRepo())
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {

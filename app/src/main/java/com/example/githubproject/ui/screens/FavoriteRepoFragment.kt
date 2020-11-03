@@ -11,7 +11,9 @@ import com.example.githubproject.R
 import com.example.githubproject.databinding.FragmentFavoriteRepoBinding
 import com.example.githubproject.ui.GithubRepoViewModel
 import com.example.githubproject.ui.adapter.FavoritedGithubRepoListAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FavoriteRepoFragment : Fragment(R.layout.fragment_favorite_repo) {
 
     private var _binding: FragmentFavoriteRepoBinding? = null
@@ -28,6 +30,9 @@ class FavoriteRepoFragment : Fragment(R.layout.fragment_favorite_repo) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
+        githubRepoViewModel.favoritedReposLiveData.observe(viewLifecycleOwner){
+            favoritedGithubRepoListAdapter.submitFavoritedMovies(it)
+        }
     }
 
     private fun initRecyclerView() {

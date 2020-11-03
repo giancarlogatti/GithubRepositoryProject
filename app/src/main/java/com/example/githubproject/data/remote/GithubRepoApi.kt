@@ -1,10 +1,11 @@
 package com.example.githubproject.data.remote
 
-import retrofit2.Response
+import io.reactivex.Single
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface GithubRepoApi {
 
-    @GET
-    fun getGithubRepositories(): Response<GithubRepo>
+    @GET("/search/repositories")
+    fun getGithubRepositories(@Query("q") searchValue: String): Single<GithubRepos>
 }
