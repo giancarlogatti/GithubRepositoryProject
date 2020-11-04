@@ -7,5 +7,5 @@ import retrofit2.http.Query
 interface GithubRepoApi {
 
     @GET("/search/repositories")
-    fun getGithubRepositories(@Query("q") searchValue: String): Single<GithubRepos>
+    fun getGithubRepositories(@Query("q") query: String): Single<GithubRepos>
 }

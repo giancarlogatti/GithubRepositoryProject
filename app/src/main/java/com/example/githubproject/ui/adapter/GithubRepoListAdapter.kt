@@ -20,6 +20,7 @@ class GithubRepoListAdapter(private val githubRepoListener: GithubRepoListener? 
 
     interface GithubRepoListener {
         fun onGithubRepoFavorited(githubRepo: GithubRepo)
+        fun onGithubRepoUnFavorited(githubRepo: GithubRepo)
     }
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
@@ -47,6 +48,8 @@ class GithubRepoListAdapter(private val githubRepoListener: GithubRepoListener? 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val repository = repos[position]
+        val filledHeart = ContextCompat.getDrawable(holder.itemView.context, R.drawable.ic_baseline_favorite_filled_24)
+        val unfilledHeart = ContextCompat.getDrawable(holder.itemView.context, R.drawable.ic_baseline_favorite_border_24)
         Glide
             .with(holder.itemView.context)
             .load(repository.owner.avatarUrl)
@@ -56,8 +59,18 @@ class GithubRepoListAdapter(private val githubRepoListener: GithubRepoListener? 
         repository.isFavorited?.let { favorited->
             if (favorited) {
                 //needs to be filled heart icon
-                holder.imgFavorite.setImageDrawable(ContextCompat.getDrawable(holder.itemView.context,
-                        R.drawable.ic_baseline_favorite_filled_24))
+                holder.imgFavorite.setImageDrawable(filledHeart)
+                holder.imgFavorite.setOnClickListener {
+                    repository.isFavorited = false
+                    holder.imgFavorite.setImageDrawable(unfilledHeart)
+                    githubRepoListener?.onGithubRepoUnFavorited(repository)
+                }
+            } else {
+                holder.imgFavorite.setOnClickListener {
+                    repository.isFavorited = true
+                    holder.imgFavorite.setImageDrawable(filledHeart)
+                    githubRepoListener?.onGithubRepoFavorited(repository)
+                }
             }
         }
     }

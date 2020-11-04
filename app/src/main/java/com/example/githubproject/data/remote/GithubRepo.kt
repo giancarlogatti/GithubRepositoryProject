@@ -10,8 +10,8 @@ data class GithubRepos (
 data class GithubRepo (
     @Json(name = "id") val id: Long,
     @Json(name = "full_name") val name: String,
-    @Json(name = "description") val description: String,
-    @Json(name = "language") val language: String,
+    @Json(name = "description") val description: String?,
+    @Json(name = "language") val language: String?,
     @Json(name = "owner") val owner: Owner,
     //fetch a list of the IDs of repositories favorited locally, and if IDs match, mark isFavorited as True
     var isFavorited: Boolean? = null

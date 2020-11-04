@@ -32,7 +32,7 @@ object NetworkModule {
         .connectTimeout(30, TimeUnit.SECONDS)
         .addInterceptor {
             val request = it.request().newBuilder()
-                .addHeader("Authorization", "").build()
+                .addHeader("Authorization", "token 0f6144c816bdb07980980aace498fc7a385e64ef").build()
             it.proceed(request)
         }.build()
 

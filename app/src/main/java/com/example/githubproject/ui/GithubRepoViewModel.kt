@@ -1,6 +1,6 @@
 package com.example.githubproject.ui
 
-import android.app.Application
+import android.util.Log
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
@@ -9,6 +9,7 @@ import com.example.githubproject.data.GithubRepoRepository
 import com.example.githubproject.data.local.FavoritedGithubRepo
 import com.example.githubproject.data.remote.GithubRepo
 import com.example.githubproject.ui.util.toLiveData
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 
 class GithubRepoViewModel @ViewModelInject constructor(
@@ -33,10 +34,23 @@ class GithubRepoViewModel @ViewModelInject constructor(
         get() = _favoritedReposLiveData
 
     fun fetchRemoteGithubRepos(query: String) {
-        _queriedReposLiveData.value = githubRepoRepository.fetchRemoteGithubRepos(query).toLiveData().value
+        disposable = githubRepoRepository.fetchRemoteGithubRepos(query)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { repos->
+                Log.i("fetchGithubRepos", "hello")
+                _queriedReposLiveData.value = repos
+            }
     }
 
-    fun saveGithubRepo(githubRepo: FavoritedGithubRepo){
+    fun fetchFavoritedGithubRepos() {
+        _favoritedReposLiveData.value = githubRepoRepository.getAllFavoritedRepos().toLiveData().value
+    }
 
+    fun saveFavoritedGithubRepo(githubRepo: FavoritedGithubRepo){
+        val d = githubRepoRepository.saveFavoritedGithubRepo(githubRepo)
+    }
+
+    fun unfavoriteGithubRepo(githubRepo: FavoritedGithubRepo) {
+        val x = githubRepoRepository.unfavoriteGithubRepo(githubRepo)
     }
 }

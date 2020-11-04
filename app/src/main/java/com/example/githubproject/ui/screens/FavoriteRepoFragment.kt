@@ -2,8 +2,10 @@ package com.example.githubproject.ui.screens
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,12 +32,16 @@ class FavoriteRepoFragment : Fragment(R.layout.fragment_favorite_repo) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
+        binding.toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
         githubRepoViewModel.favoritedReposLiveData.observe(viewLifecycleOwner){
             favoritedGithubRepoListAdapter.submitFavoritedMovies(it)
         }
     }
 
     private fun initRecyclerView() {
+        favoritedGithubRepoListAdapter = FavoritedGithubRepoListAdapter()
         binding.rvFavoritedRepos.apply {
             adapter = favoritedGithubRepoListAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

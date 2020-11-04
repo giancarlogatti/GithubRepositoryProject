@@ -1,8 +1,10 @@
 package com.example.githubproject.data
 
+import com.example.githubproject.data.local.FavoritedGithubRepo
 import com.example.githubproject.data.local.GithubDatabase
 import com.example.githubproject.data.remote.GithubRepo
 import com.example.githubproject.data.remote.GithubRepoApi
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
@@ -39,5 +41,20 @@ class GithubRepoRepository @Inject constructor(private val githubRepoApi: Github
                     isFavorited = favorited
                 }
             }
+    }
+
+    fun saveFavoritedGithubRepo(repo: FavoritedGithubRepo): Completable {
+        return githubDatabase.githubRepoDao().favoriteGithubRepo(repo)
+            .subscribeOn(Schedulers.io())
+    }
+
+    fun unfavoriteGithubRepo(repo: FavoritedGithubRepo): Completable {
+        return githubDatabase.githubRepoDao().unfavoriteGithubRepo(repo)
+            .subscribeOn(Schedulers.io())
+    }
+
+    fun getAllFavoritedRepos(): Single<List<FavoritedGithubRepo>> {
+        return githubDatabase.githubRepoDao().getAllFavoritedRepositories()
+            .subscribeOn(Schedulers.io())
     }
 }

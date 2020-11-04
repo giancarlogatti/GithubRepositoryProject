@@ -1,17 +1,21 @@
 package com.example.githubproject.data.local
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
+import io.reactivex.Completable
 import io.reactivex.Single
 
 @Dao
 interface GithubRepoDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveGithubRepo(githubRepo: FavoritedGithubRepo)
+    fun favoriteGithubRepo(githubRepo: FavoritedGithubRepo): Completable
+
+    @Delete
+    fun unfavoriteGithubRepo(githubRepo: FavoritedGithubRepo): Completable
 
     @Query("SELECT EXISTS(SELECT * FROM Repositories WHERE id = :id)")
     fun isRepoFavorited(id: Long): Single<Boolean>
+
+    @Query("SELECT * FROM Repositories")
+    fun getAllFavoritedRepositories(): Single<List<FavoritedGithubRepo>>
 }
