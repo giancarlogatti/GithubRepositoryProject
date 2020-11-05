@@ -10,3 +10,5 @@ Additional features not mentioned explicitly in spec:
     - Displays progressbar when loading repository data, a retry button when the networking call was unsuccessful
 
     - Screen data survives process death through the use of SavedStateHandle in ViewModel
+
+    - Will check to see if the repositories fetched from the network have already been favorited or not
