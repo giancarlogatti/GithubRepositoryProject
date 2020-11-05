@@ -22,7 +22,7 @@ class FavoritedGithubRepoListAdapter : RecyclerView.Adapter<FavoritedGithubRepoL
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.github_repo_layout, parent, false))
+        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.favorited_github_repo_layout, parent, false))
 
     fun submitFavoritedMovies(newRepos: List<FavoritedGithubRepo>) {
         val diffResult = DiffUtil.calculateDiff(

@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModel
 import com.example.githubproject.data.GithubRepoRepository
 import com.example.githubproject.data.local.FavoritedGithubRepo
 import com.example.githubproject.data.remote.GithubRepo
-import com.example.githubproject.ui.util.toLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
 class GithubRepoViewModel @ViewModelInject constructor(
@@ -18,39 +18,50 @@ class GithubRepoViewModel @ViewModelInject constructor(
 
     companion object {
         const val QUERIED_REPO_LIST = "queriedRepoList"
-        const val FAVORITED_REPO_LIST = "favoritedRepoList"
     }
 
-    private var disposable: Disposable? = null
+    private var compositeDisposable = CompositeDisposable()
 
     private val _queriedReposLiveData =
         savedStateHandle.getLiveData<List<GithubRepo>>(QUERIED_REPO_LIST)
     val queriedReposLiveData
         get() = _queriedReposLiveData
 
-    private val _favoritedReposLiveData =
-        savedStateHandle.getLiveData<List<FavoritedGithubRepo>>(FAVORITED_REPO_LIST)
-    val favoritedReposLiveData
-        get() = _favoritedReposLiveData
-
     fun fetchRemoteGithubRepos(query: String) {
-        disposable = githubRepoRepository.fetchRemoteGithubRepos(query)
+        val disposable = githubRepoRepository.fetchRemoteGithubRepos(query)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { repos->
-                Log.i("fetchGithubRepos", "hello")
                 _queriedReposLiveData.value = repos
             }
-    }
-
-    fun fetchFavoritedGithubRepos() {
-        _favoritedReposLiveData.value = githubRepoRepository.getAllFavoritedRepos().toLiveData().value
+        compositeDisposable.add(disposable)
     }
 
     fun saveFavoritedGithubRepo(githubRepo: FavoritedGithubRepo){
-        val d = githubRepoRepository.saveFavoritedGithubRepo(githubRepo)
+        val disposable = githubRepoRepository.saveFavoritedGithubRepo(githubRepo)
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnError {
+                Log.i("GithubRepoViewModel", "error occurred saving repo")
+            }
+            .subscribe {
+                Log.i("GithubRepoViewModel", "successfully saved repo!")
+            }
+        compositeDisposable.add(disposable)
     }
 
     fun unfavoriteGithubRepo(githubRepo: FavoritedGithubRepo) {
-        val x = githubRepoRepository.unfavoriteGithubRepo(githubRepo)
+        val disposable = githubRepoRepository.unfavoriteGithubRepo(githubRepo)
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnError {
+                Log.i("GithubRepoViewModel", "error occurred deleting repo")
+            }
+            .subscribe {
+                Log.i("GithubRepoViewModel", "successfully removed repo")
+            }
+        compositeDisposable.add(disposable)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.dispose()
     }
 }

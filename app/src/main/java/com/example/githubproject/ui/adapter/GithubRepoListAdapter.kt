@@ -66,6 +66,7 @@ class GithubRepoListAdapter(private val githubRepoListener: GithubRepoListener? 
                     githubRepoListener?.onGithubRepoUnFavorited(repository)
                 }
             } else {
+                holder.imgFavorite.setImageDrawable(unfilledHeart)
                 holder.imgFavorite.setOnClickListener {
                     repository.isFavorited = true
                     holder.imgFavorite.setImageDrawable(filledHeart)

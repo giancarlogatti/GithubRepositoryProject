@@ -50,9 +50,13 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     //Hilt ViewModels
-    def hilt_viewmodels = "1.0.0-alpha01"
+    def hilt_viewmodels = "1.0.0-alpha02"
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_viewmodels"
     kapt "androidx.hilt:hilt-compiler:$hilt_viewmodels"
+    //Nav Components
+    def nav_version = "2.3.1"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     //Material Design
@@ -81,4 +85,6 @@ dependencies {
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
+    //Android Debug Database
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 }

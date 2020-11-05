@@ -10,7 +10,8 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class GithubRepoRepository @Inject constructor(private val githubRepoApi: GithubRepoApi, private val githubDatabase: GithubDatabase) {
+class GithubRepoRepository @Inject constructor(
+    private val githubRepoApi: GithubRepoApi, private val githubDatabase: GithubDatabase) {
 
     fun fetchRemoteGithubRepos(query: String): Single<List<GithubRepo>> {
         return githubRepoApi.getGithubRepositories(query)
