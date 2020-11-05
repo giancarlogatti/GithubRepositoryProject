@@ -2,9 +2,10 @@ package com.example.githubproject.ui
 
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.example.githubproject.data.GithubRepoRepository
+import com.example.githubproject.data.repository.GithubRepoRepository
 import com.example.githubproject.data.local.FavoritedGithubRepo
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -19,7 +20,7 @@ class FavoritedGithubRepoViewModel @ViewModelInject constructor(
     private var disposable: Disposable? = null
     private val _favoritedReposLiveData =
         savedStateHandle.getLiveData<List<FavoritedGithubRepo>>(FAVORITED_REPO_LIST)
-    val favoritedReposLiveData
+    val favoritedReposLiveData: LiveData<List<FavoritedGithubRepo>>
         get() = _favoritedReposLiveData
 
     init {

@@ -18,6 +18,7 @@ class GithubRepoActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityGithubRepoBinding
     private lateinit var navController: NavController
+    private var showOverflowMenu = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,10 +28,16 @@ class GithubRepoActivity : AppCompatActivity() {
         navController = findNavController(R.id.nav_host_fragment)
         val appBarConfiguration = AppBarConfiguration(navController.graph)
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            showOverflowMenu = destination.id != R.id.favoriteRepoFragment
+            invalidateOptionsMenu()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.overflow_menu, menu)
+        if(showOverflowMenu)
+            menuInflater.inflate(R.menu.overflow_menu, menu)
         return true
     }
 

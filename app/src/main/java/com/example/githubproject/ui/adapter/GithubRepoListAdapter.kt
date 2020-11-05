@@ -56,21 +56,23 @@ class GithubRepoListAdapter(private val githubRepoListener: GithubRepoListener? 
             .into(holder.imgAvatar)
         holder.tvRepoName.text = repository.name
         holder.tvRepoDescription.text = repository.description
-        repository.isFavorited?.let { favorited->
-            if (favorited) {
-                //needs to be filled heart icon
+        repository.isFavorited?.let { isFavorited->
+            if (isFavorited) {
                 holder.imgFavorite.setImageDrawable(filledHeart)
-                holder.imgFavorite.setOnClickListener {
-                    repository.isFavorited = false
-                    holder.imgFavorite.setImageDrawable(unfilledHeart)
-                    githubRepoListener?.onGithubRepoUnFavorited(repository)
-                }
             } else {
                 holder.imgFavorite.setImageDrawable(unfilledHeart)
-                holder.imgFavorite.setOnClickListener {
-                    repository.isFavorited = true
-                    holder.imgFavorite.setImageDrawable(filledHeart)
-                    githubRepoListener?.onGithubRepoFavorited(repository)
+            }
+            holder.imgFavorite.setOnClickListener {
+                repository.isFavorited?.let { repoIsFavorited->
+                    if(repoIsFavorited) {
+                        repository.isFavorited = false
+                        holder.imgFavorite.setImageDrawable(unfilledHeart)
+                        githubRepoListener?.onGithubRepoUnFavorited(repository)
+                    } else {
+                        repository.isFavorited = true
+                        holder.imgFavorite.setImageDrawable(filledHeart)
+                        githubRepoListener?.onGithubRepoFavorited(repository)
+                    }
                 }
             }
         }

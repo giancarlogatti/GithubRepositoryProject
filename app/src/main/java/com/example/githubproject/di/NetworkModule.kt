@@ -1,6 +1,9 @@
 package com.example.githubproject.di
 
 import com.example.githubproject.data.remote.GithubRepoApi
+import com.example.githubproject.util.GITHUB_API_TOKEN
+import com.example.githubproject.util.NoConnectivityException
+import com.example.githubproject.util.Variables
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -28,11 +31,14 @@ object NetworkModule {
     @Provides
     fun provideOkhttpClient() = OkHttpClient.Builder()
         .retryOnConnectionFailure(false)
-        .readTimeout(30, TimeUnit.SECONDS)
-        .connectTimeout(30, TimeUnit.SECONDS)
+        .readTimeout(20, TimeUnit.SECONDS)
+        .connectTimeout(20, TimeUnit.SECONDS)
         .addInterceptor {
+            if(!Variables.isNetworkActive) {
+                throw NoConnectivityException()
+            }
             val request = it.request().newBuilder()
-                .addHeader("Authorization", "").build()
+                .addHeader("Authorization", "token $GITHUB_API_TOKEN").build()
             it.proceed(request)
         }.build()
 

@@ -26,13 +26,25 @@
         app:layout_constraintTop_toBottomOf="@id/search_view"
         app:layout_constraintVertical_bias="0.0" />
 
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/rv_repositories"
+        app:layout_constraintBottom_toBottomOf="@id/rv_repositories"
+        app:layout_constraintStart_toStartOf="@id/rv_repositories"
+        app:layout_constraintEnd_toEndOf="@id/rv_repositories"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_retry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/retry"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/rv_repositories"
+        app:layout_constraintBottom_toBottomOf="@id/rv_repositories"
+        app:layout_constraintStart_toStartOf="@id/rv_repositories"
+        app:layout_constraintEnd_toEndOf="@id/rv_repositories"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

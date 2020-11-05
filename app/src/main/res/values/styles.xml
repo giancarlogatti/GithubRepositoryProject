@@ -4,6 +4,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.Primary</item>
         '<item name="drawerArrowStyle">@style/drawerArrowStyle</item>
         <item name="actionOverflowButtonStyle">@style/actionOverflowButtonStyle</item>
