@@ -19,6 +19,7 @@ class FavoritedGithubRepoListAdapter : RecyclerView.Adapter<FavoritedGithubRepoL
         val imgAvatar = view.findViewById<CircleImageView>(R.id.img_avatar)
         val tvRepoName = view.findViewById<TextView>(R.id.tv_repository_name)
         val tvRepoDescription = view.findViewById<TextView>(R.id.tv_repository_description)
+        val tvRepoLanguage = view.findViewById<TextView>(R.id.tv_repository_language)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
@@ -45,6 +46,7 @@ class FavoritedGithubRepoListAdapter : RecyclerView.Adapter<FavoritedGithubRepoL
             .into(holder.imgAvatar)
         holder.tvRepoName.text = repository.name
         holder.tvRepoDescription.text = repository.description
+        holder.tvRepoLanguage.text = repository.language
     }
 
     private class FavoritedRepoDiffCallback(

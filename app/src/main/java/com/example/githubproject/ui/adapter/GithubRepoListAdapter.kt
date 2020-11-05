@@ -28,6 +28,7 @@ class GithubRepoListAdapter(private val githubRepoListener: GithubRepoListener? 
         val tvRepoName = view.findViewById<TextView>(R.id.tv_repository_name)
         val tvRepoDescription = view.findViewById<TextView>(R.id.tv_repository_description)
         val imgFavorite = view.findViewById<ImageView>(R.id.img_favorite)
+        val tvRepoLanguage = view.findViewById<TextView>(R.id.tv_repository_language)
     }
 
     fun submitRepoData(newRepos: List<GithubRepo>){
@@ -56,6 +57,7 @@ class GithubRepoListAdapter(private val githubRepoListener: GithubRepoListener? 
             .into(holder.imgAvatar)
         holder.tvRepoName.text = repository.name
         holder.tvRepoDescription.text = repository.description
+        holder.tvRepoLanguage.text = repository.language
         repository.isFavorited?.let { isFavorited->
             if (isFavorited) {
                 holder.imgFavorite.setImageDrawable(filledHeart)
